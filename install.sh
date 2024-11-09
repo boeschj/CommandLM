@@ -10,7 +10,7 @@
 set -e
 
 # -------------------------------- Variables -------------------------------- #
-VERSION="v0.1.0"
+VERSION="v0.1.0-alpha"
 INSTALL_DIR="/usr/local/bin"
 REQUIRED_PKGS=("python3" "pip3")
 
