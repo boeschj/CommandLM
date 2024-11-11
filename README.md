@@ -2,30 +2,28 @@
 
 ShellGPT is an AI powered command-line tool that suggests and explain shell commands based on natural language queries. Perfect for those cases where you forget how to exit vim.
 
-## Features
+## Installation
 
-- Natural language command suggestions
-- Command explanations
-- General chat mode
-- Context-aware recommendations using recent command history
-
-## Local Installation
-
-1. Clone the repository:
+### MacOS (via Homebrew)
 ```bash
-git clone https://github.com/yourusername/shellGPT.git
-cd shellGPT
+brew tap boeschj/tap
+brew install shellgpt
 ```
 
-2. Create and activate a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate
-```
+### Manual Installation (Linux/Windows)
+1. Download the appropriate binary for your system from the [releases page](https://github.com/boeschj/shellgpt/releases):
+   - Linux: `shellgpt-linux-x86_64.tar.gz`
+   - Windows: `shellgpt-windows-x86_64.zip`
 
-3. Install the package:
+2. Extract and install:
 ```bash
-pip install -e .
+# Linux
+tar xvf shellgpt-linux-x86_64.tar.gz
+sudo mv shellgpt /usr/local/bin/
+chmod +x /usr/local/bin/shellgpt
+
+# Windows
+# Extract the ZIP file and add the directory to your PATH
 ```
 
 ## Setup
@@ -34,19 +32,19 @@ pip install -e .
 
 2. Add your API key to your shell environment:
 ```bash
-# Add this line to your ~/.zshrc
+# Add this line to your shell config (~/.zshrc, ~/.bashrc, etc.)
 export OPENAI_API_KEY='your-api-key-here'
 
 # Reload your shell configuration
-source ~/.zshrc
+source ~/.zshrc  # or source ~/.bashrc
 ```
-
-For more information about API keys and setup, see the [OpenAI Developer Quickstart](https://platform.openai.com/docs/quickstart)
 
 ## Usage
 
 ### Get Command Suggestions
 
+## DISCLAIMER: ShellGPT generates shell commands using AI. While it aims to be helpful, it can potentially generate harmful commands. **ALWAYS review and understand any command before executing it**. Never blindly run suggested commands, especially those involving system modifications, file deletions, or privileged operations (sudo). You are responsible for any commands you execute.
+ 
 ```bash
 # Ask how to perform a task
 shellgpt "scaffold a new react application called MyCoolApp using typescript and vite"
@@ -59,8 +57,6 @@ shellgpt "what does chmod 755 do"
 ```
 
 ### Interactive Chat Mode
-
-Start an interactive chat session for more complex discussions:
 ```bash
 shellgpt chat
 ```
@@ -72,48 +68,53 @@ $ shellgpt chat
 Starting interactive chat session (type 'exit' to quit)
 
 You> What's the difference between chmod and chown?
-Assistant: chmod (change mode) and chown (change owner) serve different purposes. chmod is used to modify file permissions (read, write, execute) while chown changes the owner and group of files or directories. For example, 'chmod 755 file.txt' gives read/write/execute to owner and read/execute to others, while 'chown user:group file.txt' changes the file's owner and group.
-
-You> How do I use find with exec?
-Assistant: The find command's -exec option lets you perform actions on found files. Here's the basic syntax: 'find path -type f -name "pattern" -exec command {} \;'. The {} represents each found file, and \; marks the end of the command. For example, to find all .txt files and copy them: 'find . -type f -name "*.txt" -exec cp {} backup/ \;'
+Assistant: chmod (change mode) and chown (change owner) serve different purposes...
 
 You> exit
 ```
 
-## Development
+## Development & Releases
 
-1. Fork the repository
-
-2. Install development dependencies:
+### Building From Source
 ```bash
-pip install -e .
+# Clone the repository
+git clone https://github.com/boeschj/shellgpt.git
+cd shellgpt
+
+# Build
+cargo build --release
 ```
 
-3. Make your changes
+### Creating a New Release
 
-4. Test your changes:
+1. Update version in `Cargo.toml`
+
+2. Create and push a new tag:
 ```bash
-shellgpt "test command"
+git tag v0.x.x
+git push origin v0.x.x
+```
+
+3. Wait for GitHub Actions to build and upload release artifacts
+
+4. Update Homebrew formula:
+```bash
+# Get SHA of new Mac binary
+curl -LO https://github.com/boeschj/shellgpt/releases/latest/download/shellgpt-mac-x86_64.tar.gz
+shasum -a 256 shellgpt-mac-x86_64.tar.gz
+
+# Update homebrew-tap repository:
+# 1. Change VERSION in Formula/shellgpt.rb
+# 2. Update SHA256
+# 3. Commit and push changes
 ```
 
 ## Gotchas/Limitations
 
-- As ShellGPT is still in prototype phase, so DO NOT blindly execute the commands it gives you without first understanding them.
-- By default, shellGPT sends the last 5 commands in history to add context for recommendations. Ensure you aren't sending sensitive information over the API.
-- ShellGPT is only compatible with `zsh` at this time.
+- Currently only compatible with gpt-4o-mini
+- ShellGPT sends the last 5 commands from history for context - be mindful of sensitive information
+- This tool was primarily designed and tested for macOS `zsh` environments
 
-## Dependencies
+## License
 
-- Python 3.8+
-- click
-- openai
-- rich
-
-## Troubleshooting
-
-If you get an API key error:
-1. Check that your API key is correctly set in your environment
-2. Ensure you've reloaded your shell after setting the key
-3. Verify your API key is valid at [OpenAI's platform](https://platform.openai.com/api-keys)
-
-For more help, see the [OpenAI Documentation](https://platform.openai.com/docs/quickstart)
+MIT License - see LICENSE file for details.
