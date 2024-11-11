@@ -1,8 +1,22 @@
-# Cargo.toml
 [package]
 name = "shellgpt"
 version = "0.1.0"
 edition = "2021"
+authors = ["Jordan Boesch"]
+description = "An AI-powered command line assistant for MacOS"
+readme = "README.md"
+homepage = "https://github.com/boeschj/shellgpt"
+repository = "https://github.com/boeschj/shellgpt"
+license = "MIT"
+keywords = ["cli", "assistant", "openai", "gpt", "shell"]
+categories = ["command-line-utilities"]
+
+include = [
+    "src/**/*",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE",
+]
 
 [dependencies]
 async-openai = "0.17"
