@@ -2,6 +2,9 @@
 
 ShellGPT is an AI powered command-line tool that suggests and explain shell commands based on natural language queries. Perfect for those cases where you forget how to exit vim.
 
+![Screen Recording 2024-11-11 at 5 11 25 PM (3)](https://github.com/user-attachments/assets/f8533fb0-3a9f-4e55-8ba3-072c4d440e18)
+
+
 ## Installation
 
 ### MacOS (via Homebrew)
