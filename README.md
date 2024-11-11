@@ -43,7 +43,7 @@ source ~/.zshrc  # or source ~/.bashrc
 
 ### Get Command Suggestions
 
-## DISCLAIMER: ShellGPT generates shell commands using AI. While it aims to be helpful, it can potentially generate harmful commands. **ALWAYS review and understand any command before executing it**. Never blindly run suggested commands, especially those involving system modifications, file deletions, or privileged operations (sudo). You are responsible for any commands you execute.
+#### DISCLAIMER: ShellGPT generates shell commands using AI. While it aims to be helpful, it can potentially generate harmful commands. **ALWAYS review and understand any command before executing it** and never blindly run suggested commands. You are responsible for any commands you execute.
  
 ```bash
 # Ask how to perform a task
@@ -113,7 +113,7 @@ shasum -a 256 shellgpt-mac-x86_64.tar.gz
 
 - Currently only compatible with gpt-4o-mini
 - ShellGPT sends the last 5 commands from history for context - be mindful of sensitive information
-- This tool was primarily designed and tested for macOS `zsh` environments
+- This tool was primarily designed and tested for macOS `zsh` environments.
 
 ## License
 
