@@ -8,6 +8,7 @@ use async_openai::types::{
 };
 use console::Style;
 use dialoguer::Input;
+use indicatif::{ProgressBar, ProgressStyle};
 
 use crate::config::Config;
 use crate::shell::ShellContext;
@@ -63,13 +64,12 @@ impl Assistant {
 
         let response = self.client.chat().create(request).await?;
         
-        //If we have a response, and content within it, and in the right format, return the result
         if let Some(choice) = response.choices.first() {
             if let Some(content) = &choice.message.content {
                 if let Some((explanation, command)) = content.split_once('|') {
                     return Ok((explanation.trim().to_string(), command.trim().to_string()));
                 }
-                return Ok((content.trim().to_string(), String::new())); //Case where chatGPT didn't respect the format we requested in the prompt. If this happens, just return what they gave us rather than throw
+                return Ok((content.trim().to_string(), String::new()));
             }
         }
         
@@ -90,6 +90,13 @@ impl Assistant {
                 .into()
         ];
 
+        let spinner = ProgressBar::new_spinner();
+        spinner.set_style(
+            ProgressStyle::default_spinner()
+                .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈")
+                .template("{spinner} Thinking...")?
+        );
+
         loop {
             let query: String = Input::new().with_prompt("You").interact()?;
             
@@ -104,6 +111,8 @@ impl Assistant {
                     .into()
             );
 
+            spinner.enable_steady_tick(std::time::Duration::from_millis(80));
+
             let request = CreateChatCompletionRequestArgs::default()
                 .model("gpt-4o-mini")
                 .messages(messages.clone())
@@ -111,6 +120,8 @@ impl Assistant {
                 .build()?;
 
             let response = self.client.chat().create(request).await?;
+            
+            spinner.disable_steady_tick();
             
             if let Some(choice) = response.choices.first() {
                 if let Some(content) = &choice.message.content {

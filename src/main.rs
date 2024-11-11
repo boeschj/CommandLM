@@ -1,6 +1,7 @@
 use clap::{Parser, CommandFactory};
 use shellgpt::cli::{Cli, Commands};
 use shellgpt::assistant::Assistant;
+use indicatif::{ProgressBar, ProgressStyle};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -14,7 +15,18 @@ async fn main() -> anyhow::Result<()> {
         None => {
             if let Some(query) = cli.query {
                 let assistant = Assistant::new()?;
+                
+                let spinner = ProgressBar::new_spinner();
+                spinner.set_style(
+                    ProgressStyle::default_spinner()
+                        .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈")
+                        .template("{spinner} Thinking...")?
+                );
+                spinner.enable_steady_tick(std::time::Duration::from_millis(80));
+                
                 let (explanation, command) = assistant.get_command_suggestion(&query).await?;
+                
+                spinner.finish_and_clear();
                 
                 if !command.is_empty() {
                     println!("\n{}", console::style(&explanation).blue());
