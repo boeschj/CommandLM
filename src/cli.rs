@@ -5,6 +5,8 @@ use clap::{Parser, Subcommand};
 pub struct Cli {
     #[command(subcommand)]
     pub command: Option<Commands>,
+
+    #[arg(value_name = "QUERY")]
     pub query: Option<String>,
 }
 

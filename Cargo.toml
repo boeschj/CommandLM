@@ -1,6 +1,6 @@
 [package]
 name = "shellgpt"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Jordan Boesch"]
 description = "An AI-powered command line assistant for MacOS"
@@ -31,3 +31,4 @@ anyhow = "1.0"
 thiserror = "1.0"
 home = "0.5"
 indicatif = "0.17.8"
+atty = "0.2.14"
