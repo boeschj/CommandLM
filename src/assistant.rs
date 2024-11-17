@@ -160,7 +160,7 @@ impl Assistant {
             format!("You are a command line assistant for {shell_env} on {os}.");
 
         let response_format =
-            format!("Always response in this format: EXPLANATION{OUTPUT_DELIMITER}COMMAND");
+            format!("Always respond in this format: EXPLANATION{OUTPUT_DELIMITER}COMMAND");
 
         let format_description = format!(
             "
