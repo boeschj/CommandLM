@@ -8,7 +8,7 @@ CommandLM is an AI powered command-line tool that you can ask to suggest or expl
 ### MacOS (via Homebrew)
 ```bash
 brew tap boeschj/tap
-brew install clm
+brew install commandlm
 ```
 
 ### Manual Installation (Linux/Windows)
