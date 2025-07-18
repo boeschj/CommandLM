@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(author, version, about = "ShellGPT - Your AI-powered command line assistant", long_about = None)]
+#[command(author, version, about = "CommandLM - Your AI-powered command line assistant", long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Option<Commands>,

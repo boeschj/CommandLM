@@ -1,9 +1,9 @@
 use atty::Stream;
 use clap::{CommandFactory, Parser};
 use indicatif::{ProgressBar, ProgressStyle};
-use shellgpt::assistant::{create_client, get_command_suggestion, interactive_chat};
-use shellgpt::cli::{Cli, Commands};
-use shellgpt::shell::ShellContext;
+use commandlm::assistant::{create_client, get_command_suggestion, interactive_chat};
+use commandlm::cli::{Cli, Commands};
+use commandlm::shell::ShellContext;
 use std::io::{self, Read};
 
 #[tokio::main]

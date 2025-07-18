@@ -1,6 +1,6 @@
-# ShellGPT
+# CommandLM
 
-ShellGPT is an AI powered command-line tool that you can ask to suggest or explain shell commands based on natural language queries.
+CommandLM is an AI powered command-line tool that you can ask to suggest or explain shell commands based on natural language queries.
 
 ![Screen Recording 2024-11-11 at 5 11 25 PM (3)](https://github.com/user-attachments/assets/f8533fb0-3a9f-4e55-8ba3-072c4d440e18)
 
@@ -10,20 +10,20 @@ ShellGPT is an AI powered command-line tool that you can ask to suggest or expla
 ### MacOS (via Homebrew)
 ```bash
 brew tap boeschj/tap
-brew install shellgpt
+brew install clm
 ```
 
 ### Manual Installation (Linux/Windows)
-1. Download the appropriate binary for your system from the [releases page](https://github.com/boeschj/shellgpt/releases):
-   - Linux: `shellgpt-linux-x86_64.tar.gz`
-   - Windows: `shellgpt-windows-x86_64.zip`
+1. Download the appropriate binary for your system from the [releases page](https://github.com/boeschj/CommandLM/releases):
+   - Linux: `clm-linux-x86_64.tar.gz`
+   - Windows: `clm-windows-x86_64.zip`
 
 2. Extract and install:
 ```bash
 # Linux
-tar xvf shellgpt-linux-x86_64.tar.gz
-sudo mv shellgpt /usr/local/bin/
-chmod +x /usr/local/bin/shellgpt
+tar xvf clm-linux-x86_64.tar.gz
+sudo mv clm /usr/local/bin/
+chmod +x /usr/local/bin/clm
 
 # Windows
 # Extract the ZIP file and add the directory to your PATH
@@ -46,28 +46,28 @@ source ~/.zshrc  # or source ~/.bashrc
 
 ### Get Command Suggestions
 
-#### DISCLAIMER: ShellGPT generates shell commands using AI and may be inaccurate. **ALWAYS review and understand any command before executing it** and never blindly run suggested commands. You are responsible for any commands you execute.
+#### DISCLAIMER: CommandLM generates shell commands using AI and may be inaccurate. **ALWAYS review and understand any command before executing it** and never blindly run suggested commands. You are responsible for any commands you execute.
  
 ```bash
 # Ask how to perform a task
-shellgpt "scaffold a new react application called MyCoolApp using typescript and vite"
+clm "scaffold a new react application called MyCoolApp using typescript and vite"
 
 # Get help with complex commands
-shellgpt "create a tar archive and compress it"
+clm "create a tar archive and compress it"
 
 # Understand what a command does
-shellgpt "what does chmod 755 do"
+clm "what does chmod 755 do"
 ```
 
 ### Interactive Chat Mode
 ```bash
-shellgpt chat
+clm chat
 ```
 
 ## Examples
 
 ```bash
-$ shellgpt chat
+$ clm chat
 Starting interactive chat session (type 'exit' to quit)
 
 You> What's the difference between chmod and chown?
@@ -81,8 +81,8 @@ You> exit
 ### Building From Source
 ```bash
 # Clone the repository
-git clone https://github.com/boeschj/shellgpt.git
-cd shellgpt
+git clone https://github.com/boeschj/CommandLM.git
+cd CommandLM
 
 # Build
 cargo build --release
@@ -103,11 +103,11 @@ git push origin v0.x.x
 4. Update Homebrew formula:
 ```bash
 # Get SHA of new Mac binary
-curl -LO https://github.com/boeschj/shellgpt/releases/latest/download/shellgpt-mac-x86_64.tar.gz
-shasum -a 256 shellgpt-mac-x86_64.tar.gz
+curl -LO https://github.com/boeschj/CommandLM/releases/latest/download/clm-mac-x86_64.tar.gz
+shasum -a 256 clm-mac-x86_64.tar.gz
 
 # Update homebrew-tap repository:
-# 1. Change VERSION in Formula/shellgpt.rb
+# 1. Change VERSION in Formula/clm.rb
 # 2. Update SHA256
 # 3. Commit and push changes
 ```
@@ -115,7 +115,7 @@ shasum -a 256 shellgpt-mac-x86_64.tar.gz
 ## Gotchas/Limitations
 
 - Currently only compatible with gpt-4o-mini
-- ShellGPT sends the last 5 commands from history for context - be mindful of sensitive information
+- CommandLM sends the last 5 commands from history for context - be mindful of sensitive information
 - This tool was primarily designed and tested for macOS `zsh` environments.
 
 ## License

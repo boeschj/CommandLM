@@ -5,7 +5,7 @@ use std::env;
 use crate::shell::ShellType;
 
 pub fn get_config_dir() -> Result<std::path::PathBuf> {
-    let project_dirs = ProjectDirs::from("com", "shellgpt", "shellgpt")
+    let project_dirs = ProjectDirs::from("com", "commandlm", "commandlm")
         .ok_or_else(|| anyhow!("Failed to get project directories"))?;
     Ok(project_dirs.config_dir().to_path_buf())
 }
