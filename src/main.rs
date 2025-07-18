@@ -1,18 +1,20 @@
 use atty::Stream;
 use clap::{CommandFactory, Parser};
 use indicatif::{ProgressBar, ProgressStyle};
-use shellgpt::assistant::Assistant;
+use shellgpt::assistant::{create_client, get_command_suggestion, interactive_chat};
 use shellgpt::cli::{Cli, Commands};
+use shellgpt::shell::ShellContext;
 use std::io::{self, Read};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
+    let shell_context = ShellContext::default();
+    let client = create_client(&shell_context)?;
 
     match cli.command {
         Some(Commands::Chat) => {
-            let assistant = Assistant::new()?;
-            assistant.interactive_chat().await?;
+            interactive_chat(&client, &shell_context).await?;
         }
         None => {
             // Read from stdin if there's piped input
@@ -49,7 +51,8 @@ async fn main() -> anyhow::Result<()> {
 }
 
 async fn process_query(query: &str, context: Option<&str>) -> anyhow::Result<()> {
-    let assistant = Assistant::new()?;
+    let shell_context = ShellContext::default();
+    let client = create_client(&shell_context)?;
 
     let spinner = ProgressBar::new_spinner();
     spinner.set_style(
@@ -59,7 +62,7 @@ async fn process_query(query: &str, context: Option<&str>) -> anyhow::Result<()>
     );
     spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-    let (explanation, command) = assistant.get_command_suggestion(query, context).await?;
+    let (explanation, command) = get_command_suggestion(&client, &shell_context, query, context).await?;
 
     spinner.finish_and_clear();
 
