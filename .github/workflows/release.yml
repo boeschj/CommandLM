@@ -69,14 +69,14 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           cd target/${{ matrix.target }}/release
-          7z a ../../../${{ matrix.name }} commandlm.exe
+          7z a ../../../${{ matrix.name }} clm.exe
           cd -
 
       - name: Prepare artifacts [-nix]
         if: matrix.os != 'windows-latest'
         run: |
           cd target/${{ matrix.target }}/release
-          tar czvf ../../../${{ matrix.name }} commandlm
+          tar czvf ../../../${{ matrix.name }} clm
           cd -
 
       - name: Upload Release Asset
