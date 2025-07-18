@@ -1,10 +1,12 @@
 use atty::Stream;
 use clap::{CommandFactory, Parser};
+use dialoguer::Confirm;
 use indicatif::{ProgressBar, ProgressStyle};
 use commandlm::assistant::{create_client, get_command_suggestion, interactive_chat};
 use commandlm::cli::{Cli, Commands};
 use commandlm::shell::ShellContext;
 use std::io::{self, Read};
+use std::process::Command;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -70,11 +72,57 @@ async fn process_query(query: &str, context: Option<&str>) -> anyhow::Result<()>
         println!("\n{}", console::style(&explanation).blue());
         println!("\n{}", console::style("Command:").green());
         println!("{}\n", console::style(&command).white().bold());
+
+        let confirmed = Confirm::new()
+            .with_prompt("Execute this command?")
+            .default(false)
+            .interact()?;
+
+        if confirmed {
+            println!("{}", console::style("Executing...").yellow());
+            execute_command(&command)?;
+        } else {
+            println!("{}", console::style("Command not executed.").dim());
+        }
     } else {
         println!(
             "\n{}",
             console::style("No command suggestion available").red()
         );
+    }
+
+    Ok(())
+}
+
+fn execute_command(command: &str) -> anyhow::Result<()> {
+    let shell_context = ShellContext::default();
+    
+    let (shell_cmd, shell_args) = match shell_context.shell_type {
+        commandlm::shell::ShellType::Bash => ("bash", vec!["-c"]),
+        commandlm::shell::ShellType::Zsh => ("zsh", vec!["-c"]),
+        commandlm::shell::ShellType::Fish => ("fish", vec!["-c"]),
+        commandlm::shell::ShellType::PowerShell => ("powershell", vec!["-Command"]),
+        commandlm::shell::ShellType::Cmd => ("cmd", vec!["/C"]),
+        commandlm::shell::ShellType::Unknown(_) => ("sh", vec!["-c"]),
+    };
+
+    let mut cmd_args = shell_args;
+    cmd_args.push(command);
+
+    let output = Command::new(shell_cmd)
+        .args(&cmd_args)
+        .output()?;
+
+    if output.status.success() {
+        print!("{}", String::from_utf8_lossy(&output.stdout));
+        if !output.stderr.is_empty() {
+            eprint!("{}", String::from_utf8_lossy(&output.stderr));
+        }
+        println!("{}", console::style("✓ Command completed successfully").green());
+    } else {
+        eprint!("{}", String::from_utf8_lossy(&output.stderr));
+        println!("{}", console::style("✗ Command failed").red());
+        std::process::exit(output.status.code().unwrap_or(1));
     }
 
     Ok(())

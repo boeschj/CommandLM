@@ -54,10 +54,14 @@ clm "scaffold a new react application called MyCoolApp using typescript and vite
 
 # Get help with complex commands
 clm "create a tar archive and compress it"
+# Shows: tar -czf archive.tar.gz folder/
+# Prompt: Execute this command? [y/N]
 
 # Understand what a command does
 clm "what does chmod 755 do"
 ```
+
+CommandLM will suggest a command and ask if you want to execute it. You can safely review the command before confirming.
 
 ### Interactive Chat Mode
 ```bash
